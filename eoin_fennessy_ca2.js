@@ -231,3 +231,50 @@ db.users.insertMany([
     joinDate: { $date: "2010-02-09T17:32:50Z" },
   },
 ]);
+
+// ############################################################################
+
+// Part 3: Update, Delete
+
+// Update
+// Perform the following update operations on the movies and users you added:
+
+// On one of your movie documents (whichever you choose), update the IMDB rating to a new value and increase the number of votes by 1.
+// Add a new favourite to the array in one of your user documents.
+// Perform two additional updates of your choice.
+
+// Delete
+// Write the code to delete one of the movies you added.
+
+// Part 3: Update the IMDB rating to a new value and increase the number of votes by 1.
+db.movies.updateOne(
+  { _id: 0 },
+  {
+    $set: { "imdb.rating": 8.3 },
+    $inc: { "imdb.votes": 1 },
+  }
+);
+
+// Part 3: Add a new favourite to the array in one of your user documents.
+db.users.updateOne(
+  { _id: 0 },
+  { $addToSet: { favourites: "573a1399f29313caabceeb20" } }
+);
+
+// Part 3: Update Tywin Lannister's email from "charles_dance@gameofthron.es" to "tywin_lannister@fakegmail.com" in all of his comments
+db.movies.updateMany(
+  { "comments.name": "Tywin Lannister" },
+  { $set: { "comments.$[element].email": "tywin_lannister@fakegmail.com" } },
+  { arrayFilters: [{ "element.email": "charles_dance@gameofthron.es" }] }
+);
+
+// Part 3: Add actor to the cast array for "Green Book"
+db.movies.updateOne(
+  { _id: 0 },
+  {
+    $push: { cast: "Sebastian Maniscalco" },
+  }
+);
+
+// Part 3: Delete one of the movies you added
+db.movies.deleteOne({ _id: 1 });
