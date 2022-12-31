@@ -135,3 +135,99 @@ db.movies
   .pretty();
 
 // ############################################################################
+
+// Part 2: Create
+
+// The movies collection only contains movies from 2016 and earlier. Add two movies you like that were released between 2017 and 2021. The movie documents you create should contain:
+
+// _id (int)
+// title (string)
+// year (int)
+// runtime (int)
+// cast (array)
+// plot (string)
+// directors (array)
+// imdb (subdocument, containing…)
+//   rating (double)
+//   votes (int)
+//   genres (array)
+
+//Part 2, Insert Movie 1 of 2
+db.movies.deleteOne({ _id: 0 });
+db.movies.insertOne({
+  _id: 0,
+  title: "Green Book",
+  year: 2018,
+  runtime: 130,
+  cast: ["Viggo Mortensen", "Mahershala Ali", "Linda Cardellini"],
+  plot: "A working-class Italian-American bouncer becomes the driver for an African-American classical pianist on a tour of venues through the 1960s American South.",
+  directors: ["Peter Farrelly"],
+  imdb: {
+    rating: 8.2,
+    votes: 493411,
+    //   genres: [
+    //   "Biography",
+    //   "Comedy",
+    //   "Drama"
+    // ]
+  },
+  genres: ["Biography", "Comedy", "Drama"],
+});
+
+//Part 2, Insert Movie 2 of 2
+db.movies.deleteOne({ _id: 1 });
+db.movies.insertOne({
+  _id: 1,
+  title: "Three Billboards Outside Ebbing, Missouri",
+  year: 2017,
+  runtime: 115,
+  cast: ["Frances McDormand", "Woody Harrelson", "Sam Rockwell"],
+  plot: "A mother personally challenges the local authorities to solve her daughter's murder when they fail to catch the culprit.",
+  directors: ["Martin McDonagh"],
+  imdb: {
+    rating: 8.1,
+    votes: 509092,
+    //   genres: [
+    //   "Comedy",
+    //   "Crime",
+    //   "Drama"
+    // ]
+  },
+  genres: ["Comedy", "Crime", "Drama"],
+});
+
+//Part 2, Create "users" collection and add three entries
+db.users.drop();
+db.createCollection("users");
+
+db.users.deleteMany({ id: { $in: [0, 1, 2] } });
+db.users.insertMany([
+  {
+    _id: 0,
+    favourites: ["573a1397f29313caabce7b02", "573a139af29313caabcefe7e"],
+    name: "Eoin Fennessy",
+    email: "eoin@fennessy.com",
+    password: "secret",
+    joinDate: { $date: "2012-03-01T12:15:31Z" },
+  },
+  {
+    _id: 1,
+    favourites: [
+      "573a1398f29313caabceae08",
+      "573a13b4f29313caabd410a2",
+      "573a1398f29313caabce9ac0",
+    ],
+    name: "Homer Simpson",
+    email: "homer@simpson.com",
+    password: "secret",
+    joinDate: { $date: "2015-07-03T15:12:01Z" },
+  },
+  {
+    _id: 2,
+    favourites: ["573a1399f29313caabcecc6f", "573a1395f29313caabce1f6a"],
+    name: "Marge Simpson",
+    email: "marge@simpson.com",
+    password: "secret",
+    joinDate: { $date: "2010-02-09T17:32:50Z" },
+  },
+]);
