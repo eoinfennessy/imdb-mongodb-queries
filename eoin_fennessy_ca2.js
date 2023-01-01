@@ -204,7 +204,10 @@ db.users.deleteMany({ id: { $in: [0, 1, 2] } });
 db.users.insertMany([
   {
     _id: 0,
-    favourites: ["573a1397f29313caabce7b02", "573a139af29313caabcefe7e"],
+    favourites: [
+      ObjectId("573a1397f29313caabce7b02"), 
+      ObjectId("573a139af29313caabcefe7e")
+    ],
     name: "Eoin Fennessy",
     email: "eoin@fennessy.com",
     password: "secret",
@@ -213,9 +216,9 @@ db.users.insertMany([
   {
     _id: 1,
     favourites: [
-      "573a1398f29313caabceae08",
-      "573a13b4f29313caabd410a2",
-      "573a1398f29313caabce9ac0",
+      ObjectId("573a1398f29313caabceae08"),
+      ObjectId("573a13b4f29313caabd410a2"),
+      ObjectId("573a1398f29313caabce9ac0"),
     ],
     name: "Homer Simpson",
     email: "homer@simpson.com",
@@ -224,7 +227,10 @@ db.users.insertMany([
   },
   {
     _id: 2,
-    favourites: ["573a1399f29313caabcecc6f", "573a1395f29313caabce1f6a"],
+    favourites: [
+      ObjectId("573a1399f29313caabcecc6f"),
+      ObjectId("573a1395f29313caabce1f6a")
+    ],
     name: "Marge Simpson",
     email: "marge@simpson.com",
     password: "secret",
