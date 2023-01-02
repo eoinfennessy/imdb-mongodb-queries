@@ -1,20 +1,14 @@
 use("ca2");
 
-// ############################################################################
 
+// ============================================================================
 // Part 1: Read (Find)
+// ============================================================================
 
-// Create six useful find queries on the movies collection. You should make use of:
 
-// Comparison operators e.g. $in, $nin, $gt, $gte, $lte, $lt
-// Array operators: e.g. $elemMatch, $all
-// Projection
-// Cursor methods e.g. limit, skip, sort and count
-
-// Part 1, Query 1
-// Find all French non-short comedic dramas that receive a viewer rating of 4 or higher on Rotten Tomatoes
+// 1.1: Find all French non-short comedic dramas that receive a viewer rating of 4 or higher on Rotten Tomatoes
 // Display only title, directors, year, plot and runtime
-// Sort results alphabetically by title and then by year released descending (if multiple films with the same title exist) and only display the first 10 entries
+// Sort results alphabetically by title and then by year released descending (if multiple movies with the same title exist) and only display the first 10 entries
 db.movies
   .find(
     {
@@ -28,8 +22,7 @@ db.movies
   .limit(10)
   .pretty();
 
-// Part 1, Query 2
-// Get count of films made in the past 25 years written or directed by both Ethan and Joel Coen and starring either Frances McDormand or George Clooney
+// 1.2: Get count of movies made in the past 25 years written or directed by both Ethan and Joel Coen and starring either Frances McDormand or George Clooney
 db.movies
   .find({
     $or: [
@@ -45,8 +38,7 @@ db.movies
   })
   .count();
 
-// Part 1, Query 3
-// Get films written and directed by Stanley Kubrick released between 1960 and 1980 where awards mentions "Oscar"
+// 1.3: Get movies written and directed by Stanley Kubrick released between 1960 and 1980 where awards mentions "Oscar"
 db.movies
   .find(
     {
@@ -63,9 +55,8 @@ db.movies
   .sort({ year: 1 })
   .pretty();
 
-// Part 1, Query 4
-// Find films where a comment has been left by email address "warren_wilson@fakegmail.com" containing the word "voluptatibus" that was left between 1975 and 1985
-// Display each film's title, directors, year and all comments, and skip the first two results
+// 1.4: Find movies where a comment has been left by email address "warren_wilson@fakegmail.com" containing the word "voluptatibus" that was left between 1975 and 1985
+// Display each movie's title, directors, year and all comments, and skip the first two results
 db.movies
   .find(
     {
@@ -86,10 +77,9 @@ db.movies
   .skip(2)
   .pretty();
 
-// Part 1, Query 5
-// Find sub-ninety-minute films that are not rated "R" or "PG-13", were made in 1980 or later, are tagged with both "Animation" and "Adventure" genres, and have over 400 mflix comments
-// Display film ID, title, num_mflix_comments, rating, year made and genres
-// Sort the results by number of mflix comments descending, and limit results to first three films.
+// 1.5: Find sub-ninety-minute movies that are not rated "R" or "PG-13", were made in 1980 or later, are tagged with both "Animation" and "Adventure" genres, and have over 400 mflix comments
+// Display movie ID, title, num_mflix_comments, rating, year made and genres
+// Sort the results by number of mflix comments descending, and limit results to first three movies.
 db.movies
   .find(
     {
@@ -112,9 +102,8 @@ db.movies
   .limit(3)
   .pretty();
 
-// Part 1, Query 6
-// Find all Harry Potter, Narnia, and Lord of the Rings films whose genres include "Adventure" and "Family" but not "Animation", and have a metacritic rating greater than or equal to sixty
-// Display title, metacritic rating and genres, and sort by metacritic rating descending, limiting results to the first 5 films.
+// 1.6: Find all Harry Potter, Narnia, and Lord of the Rings movies whose genres include "Adventure" and "Family" but not "Animation", and have a metacritic rating greater than or equal to sixty
+// Display title, metacritic rating and genres, and sort by metacritic rating descending, limiting results to the first 5 movies.
 db.movies
   .find(
     {
@@ -134,25 +123,13 @@ db.movies
   .limit(5)
   .pretty();
 
-// ############################################################################
 
+// ============================================================================
 // Part 2: Create
+// ============================================================================
 
-// The movies collection only contains movies from 2016 and earlier. Add two movies you like that were released between 2017 and 2021. The movie documents you create should contain:
 
-// _id (int)
-// title (string)
-// year (int)
-// runtime (int)
-// cast (array)
-// plot (string)
-// directors (array)
-// imdb (subdocument, containing…)
-//   rating (double)
-//   votes (int)
-//   genres (array)
-
-//Part 2, Insert Movie 1 of 2
+// 2.1: Insert Movie 1 of 2
 db.movies.deleteOne({ _id: 0 });
 db.movies.insertOne({
   _id: 0,
@@ -174,7 +151,7 @@ db.movies.insertOne({
   genres: ["Biography", "Comedy", "Drama"],
 });
 
-//Part 2, Insert Movie 2 of 2
+// 2.2: Insert Movie 2 of 2
 db.movies.deleteOne({ _id: 1 });
 db.movies.insertOne({
   _id: 1,
@@ -196,63 +173,59 @@ db.movies.insertOne({
   genres: ["Comedy", "Crime", "Drama"],
 });
 
-//Part 2, Create "users" collection and add three entries
+// 2.3: Create "users" collection and add three entries
 db.users.drop();
 db.createCollection("users");
 
-db.users.deleteMany({ id: { $in: [0, 1, 2] } });
 db.users.insertMany([
   {
     _id: 0,
-    favourites: [
-      ObjectId("573a1397f29313caabce7b02"), 
-      ObjectId("573a139af29313caabcefe7e")
-    ],
     name: "Eoin Fennessy",
     email: "eoin@fennessy.com",
     password: "secret",
-    joinDate: { $date: "2012-03-01T12:15:31Z" },
+    joinDate: new Date("2012-03-01T12:15:31Z"),
+    birthDate: new Date("1989-03-01"),
+    favourites: [
+      ObjectId("573a1397f29313caabce7b02"),
+      ObjectId("573a139af29313caabcefe7e"),
+    ],
   },
   {
     _id: 1,
+    name: "Homer Simpson",
+    email: "homer@simpson.com",
+    password: "secret",
+    joinDate: new Date("2015-07-03T15:12:01Z"),
+    birthDate: new Date("12-05-1956"),
     favourites: [
       ObjectId("573a1398f29313caabceae08"),
       ObjectId("573a13b4f29313caabd410a2"),
       ObjectId("573a1398f29313caabce9ac0"),
+      ObjectId("573a1397f29313caabce7b02"),
     ],
-    name: "Homer Simpson",
-    email: "homer@simpson.com",
-    password: "secret",
-    joinDate: { $date: "2015-07-03T15:12:01Z" },
   },
   {
     _id: 2,
-    favourites: [
-      ObjectId("573a1399f29313caabcecc6f"),
-      ObjectId("573a1395f29313caabce1f6a")
-    ],
     name: "Marge Simpson",
     email: "marge@simpson.com",
     password: "secret",
-    joinDate: { $date: "2010-02-09T17:32:50Z" },
+    joinDate: new Date("2010-02-09T17:32:50Z"),
+    birthDate: new Date("01-10-1956"),
+    favourites: [
+      ObjectId("573a1399f29313caabcecc6f"),
+      ObjectId("573a1395f29313caabce1f6a"),
+      ObjectId("573a13b4f29313caabd410a2"),
+    ],
   },
 ]);
 
-// ############################################################################
 
+// ============================================================================
 // Part 3: Update, Delete
+// ============================================================================
 
-// Update
-// Perform the following update operations on the movies and users you added:
 
-// On one of your movie documents (whichever you choose), update the IMDB rating to a new value and increase the number of votes by 1.
-// Add a new favourite to the array in one of your user documents.
-// Perform two additional updates of your choice.
-
-// Delete
-// Write the code to delete one of the movies you added.
-
-// Part 3: Update the IMDB rating to a new value and increase the number of votes by 1.
+// 3.1: Update the IMDB rating to a new value and increase the number of votes by 1.
 db.movies.updateOne(
   { _id: 0 },
   {
@@ -261,20 +234,20 @@ db.movies.updateOne(
   }
 );
 
-// Part 3: Add a new favourite to the array in one of your user documents.
+// 3.2: Add a new favourite to the array in one of your user documents.
 db.users.updateOne(
   { _id: 0 },
-  { $addToSet: { favourites: "573a1399f29313caabceeb20" } }
+  { $addToSet: { favourites: ObjectId("573a1399f29313caabceeb20") } }
 );
 
-// Part 3: Update Tywin Lannister's email from "charles_dance@gameofthron.es" to "tywin_lannister@fakegmail.com" in all of his comments
+// 3.3: Update Tywin Lannister's email from "charles_dance@gameofthron.es" to "tywin_lannister@fakegmail.com" in all of his comments
 db.movies.updateMany(
   { "comments.name": "Tywin Lannister" },
   { $set: { "comments.$[element].email": "tywin_lannister@fakegmail.com" } },
   { arrayFilters: [{ "element.email": "charles_dance@gameofthron.es" }] }
 );
 
-// Part 3: Add actor to the cast array for "Green Book"
+// 3.4: Add actor to the cast array for "Green Book"
 db.movies.updateOne(
   { _id: 0 },
   {
@@ -282,5 +255,114 @@ db.movies.updateOne(
   }
 );
 
-// Part 3: Delete one of the movies you added
+// 3.5: Delete one of the movies you added
 db.movies.deleteOne({ _id: 1 });
+
+
+// ============================================================================
+// Part 4: Aggregation
+// ============================================================================
+
+
+// 4.1: Group by countries each movie made after 1980 was made in and display various stats such as count of movies made and average IMDB rating for each
+db.movies
+  .aggregate([
+    {
+      $match: {
+        year: { $gte: 1980 },
+        "imdb.rating": { $ne: null },
+      },
+    },
+    { $unwind: "$countries" },
+    {
+      $project: {
+        countries: 1,
+        "imdb.rating": 1,
+        "imdb.votes": 1,
+        runtime: 1,
+        ageInYears: { $subtract: [new Date().getFullYear(), "$year"] },
+      },
+    },
+    {
+      $group: {
+        _id: "$countries",
+        avgRating: { $avg: "$imdb.rating" },
+        sumOfVotes: { $sum: "$imdb.votes" },
+        countOfMovies: { $count: {} },
+        avgMovieAge: { $avg: "$ageInYears" },
+        avgRuntime: { $avg: "$runtime" },
+      },
+    },
+    { $match: { countOfMovies: { $gte: 50 } } },
+    { $sort: { avgRating: -1 } },
+    { $limit: 30 },
+    {
+      $addFields: {
+        avgRating: { $round: ["$avgRating", 2] },
+        avgMovieAge: { $round: ["$avgMovieAge", 1] },
+        avgRuntime: { $round: "$avgRuntime" },
+      },
+    },
+  ])
+  .pretty();
+
+// 4.2: Group by favourited movies and display count of times each was favourited and average age of users who favourited each and joined in or after 2010
+db.users
+  .aggregate([
+    {
+      $match: {
+        joinDate: { $gte: new Date("2010-01-01") },
+        favourites: { $ne: null },
+      },
+    },
+    { $unwind: "$favourites" },
+    {
+      $project: {
+        favourites: 1,
+        userAge: {
+          $divide: [{ $subtract: [new Date(), "$birthDate"] }, 31536000000],
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "movies",
+        localField: "favourites",
+        foreignField: "_id",
+        as: "movie",
+      },
+    },
+    {
+      $group: {
+        _id: "$movie.title",
+        countOfFavourites: { $count: {} },
+        avgUserAge: { $avg: "$userAge" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        movie: { $first: "$_id" },
+        countOfFavourites: "$countOfFavourites",
+        avgUserAge: { $round: ["$avgUserAge", 1] },
+      },
+    },
+    {
+      $sort: {
+        countOfFavourites: -1,
+        avgUserAge: 1,
+        movie: 1,
+      },
+    },
+    { $limit: 10 },
+  ])
+  .pretty();
+
+// Undo all changes made to ca2 database
+db.movies.deleteMany({ id: { $in: [0, 1] } });
+db.users.drop();
+db.movies.updateMany(
+  { "comments.name": "Tywin Lannister" },
+  { $set: { "comments.$[element].email": "charles_dance@gameofthron.es" } },
+  { arrayFilters: [{ "element.email": "tywin_lannister@fakegmail.com" }] }
+);
