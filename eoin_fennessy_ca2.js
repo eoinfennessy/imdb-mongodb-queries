@@ -142,11 +142,7 @@ db.movies.insertOne({
   imdb: {
     rating: 8.2,
     votes: 493411,
-    //   genres: [
-    //   "Biography",
-    //   "Comedy",
-    //   "Drama"
-    // ]
+    // genres: ["Biography", "Comedy", "Drama"]
   },
   genres: ["Biography", "Comedy", "Drama"],
 });
@@ -164,11 +160,7 @@ db.movies.insertOne({
   imdb: {
     rating: 8.1,
     votes: 509092,
-    //   genres: [
-    //   "Comedy",
-    //   "Crime",
-    //   "Drama"
-    // ]
+    // genres: ["Comedy", "Crime", "Drama"]
   },
   genres: ["Comedy", "Crime", "Drama"],
 });
@@ -359,8 +351,8 @@ db.users
   .pretty();
 
 // Undo all changes made to ca2 database
-db.movies.deleteMany({ id: { $in: [0, 1] } });
 db.users.drop();
+db.movies.deleteMany({ id: { $in: [0, 1] } });
 db.movies.updateMany(
   { "comments.name": "Tywin Lannister" },
   { $set: { "comments.$[element].email": "charles_dance@gameofthron.es" } },
